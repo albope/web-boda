@@ -7,7 +7,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WEDDING_CONFIG } from "@/config/wedding";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
+// Desktop: sin "Confirmar Asistencia" (ya está el botón CTA)
+const navLinksDesktop = [
+  { href: "/", label: "Inicio" },
+  { href: "/detalles", label: "Detalles" },
+  { href: "/#como-llegar", label: "Ubicación" },
+];
+
+// Mobile: con "Confirmar Asistencia" en el menú lateral
+const navLinksMobile = [
   { href: "/", label: "Inicio" },
   { href: "/detalles", label: "Detalles" },
   { href: "/#como-llegar", label: "Ubicación" },
@@ -166,8 +174,8 @@ export function Header() {
         <div className="bg-white/95 backdrop-blur-xl shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.06)] border-b border-gold-200/30">
           <div className="px-4 sm:px-6 lg:px-12">
               <div className="flex items-center justify-between h-16">
-                {/* Logo - gold with dark text */}
-                <Link href="/" className="group flex items-center gap-3" onClick={closeMenu}>
+                {/* Logo - solo icono en desktop */}
+                <Link href="/" className="group" onClick={closeMenu}>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
@@ -175,18 +183,11 @@ export function Header() {
                   >
                     <Monogram className="w-10 h-10" variant="gold" />
                   </motion.div>
-
-                  {/* Names on larger screens - dark text for light background */}
-                  <span className="hidden lg:block font-display text-lg text-stone-800">
-                    {WEDDING_CONFIG.couple.partner1}
-                    <span className="text-gold-400 mx-1.5">&</span>
-                    {WEDDING_CONFIG.couple.partner2}
-                  </span>
                 </Link>
 
                 {/* Desktop Navigation - Editorial style with gold underline */}
                 <nav className="hidden md:flex items-center gap-1" aria-label="Navegación principal">
-                  {navLinks.map((link) => (
+                  {navLinksDesktop.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -201,7 +202,7 @@ export function Header() {
                     href="/confirmar"
                     className="ml-3 px-5 py-2 bg-gradient-to-r from-gold-300 to-gold-400 text-white text-sm font-semibold rounded-full shadow-sm hover:shadow-lg hover:shadow-gold-400/25 hover:scale-[1.02] transition-all duration-300"
                   >
-                    Confirmar
+                    Confirmar Asistencia
                   </Link>
                 </nav>
 
@@ -365,7 +366,7 @@ export function Header() {
                 onTouchEnd={() => setHoveredIndex(null)}
                 onTouchCancel={() => setHoveredIndex(null)}
               >
-                {navLinks.map((link, index) => (
+                {navLinksMobile.map((link, index) => (
                   <motion.div
                     key={link.href}
                     initial={{ opacity: 0, x: 20 }}

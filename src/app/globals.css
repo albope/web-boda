@@ -49,3 +49,13 @@ html {
     text-wrap: balance;
   }
 }
+
+/* Animación del destello dorado en el borde del CTA */
+@keyframes borderSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

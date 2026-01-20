@@ -86,13 +86,20 @@ export function QuickInfo() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center mt-10"
+          className="text-center mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
         >
-          <Link
-            href="/detalles"
+          <a
+            href="#venues"
             className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-500 font-medium transition-colors"
           >
-            Ver todos los detalles
+            Ver ubicaciones
+            <span aria-hidden="true">↓</span>
+          </a>
+          <Link
+            href="/detalles"
+            className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-700 font-medium transition-colors"
+          >
+            Más detalles
             <span aria-hidden="true">→</span>
           </Link>
         </motion.div>

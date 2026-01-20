@@ -2,19 +2,54 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, MapPin } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
+import { cn } from "@/lib/utils";
+
+// Variantes de animación - Stagger orquestado con blur
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    filter: "blur(10px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1], // easeOutQuint
+    },
+  },
+};
 
 export function Hero() {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-      {/* Static Image for Desktop */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* ===== FONDOS ===== */}
+
+      {/* Desktop: Imagen estática - menos zoom para ver más contexto */}
       <div
-        className="absolute inset-0 hidden md:block bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero.jpg')" }}
+        className="absolute inset-0 hidden md:block bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/hero.jpg')",
+          backgroundPosition: "center center",
+          backgroundSize: "115% auto"
+        }}
       />
 
-      {/* Video Background for Mobile only */}
+      {/* Mobile: Video autoplay */}
       <video
         autoPlay
         muted
@@ -25,100 +60,152 @@ export function Hero() {
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* ===== OVERLAYS - Sistema de capas premium ===== */}
 
-      <div className="relative z-10 text-center px-4 sm:px-6 py-16 max-w-3xl mx-auto">
-        {/* "Nos casamos" label */}
+      {/* Capa 1: Vignette radial - centro más luminoso */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.4) 100%)",
+        }}
+      />
+
+      {/* Capa 2: Gradiente vertical - mejor contraste en CTA */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
+
+      {/* Capa 3: Grain cinematográfico sutil */}
+      <div
+        className="absolute inset-0 opacity-[0.015] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* ===== CONTENIDO ===== */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 text-center px-6 sm:px-8 py-20 max-w-4xl mx-auto"
+      >
+        {/* Línea decorativa */}
+        <motion.div
+          variants={itemVariants}
+          className="w-16 h-px bg-gradient-to-r from-transparent via-gold-300/70 to-transparent mx-auto mb-8"
+        />
+
+        {/* Eyebrow */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-gold-300 font-medium tracking-widest uppercase text-sm mb-6"
+          variants={itemVariants}
+          className={cn(
+            "text-white/80 font-body font-normal",
+            "text-[11px] sm:text-xs",
+            "tracking-[0.25em] uppercase",
+            "mb-6"
+          )}
         >
-          ¡Nos casamos!
+          Nos casamos
         </motion.p>
 
-        {/* Couple Names */}
+        {/* Nombres */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display text-display-sm sm:text-display-md md:text-display-lg text-white mb-6"
+          variants={itemVariants}
+          className={cn(
+            "font-display font-normal",
+            "text-[2.75rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem]",
+            "leading-[1] tracking-tight",
+            "text-white",
+            "mb-12 sm:mb-16"
+          )}
         >
           {WEDDING_CONFIG.couple.partner1}
-          <span className="text-gold-300 mx-2 sm:mx-4">&</span>
+          <span className="inline-block text-gold-300/90 mx-3 sm:mx-4 italic font-light text-[0.7em]">
+            &
+          </span>
           {WEDDING_CONFIG.couple.partner2}
         </motion.h1>
 
-        {/* Date */}
+        {/* Fecha y Ubicación */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex items-center justify-center gap-2 text-white/90 mb-4"
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 mb-16 sm:mb-20"
         >
-          <Calendar className="w-5 h-5 text-gold-300" aria-hidden="true" />
-          <p className="text-lg sm:text-xl">
-            {WEDDING_CONFIG.date.day}, {WEDDING_CONFIG.date.display}
-          </p>
-        </motion.div>
-
-        {/* Location */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex items-center justify-center gap-2 text-white/80 mb-10"
-        >
-          <MapPin className="w-5 h-5 text-gold-300" aria-hidden="true" />
-          <p className="text-base sm:text-lg">
+          <span
+            className="text-white/90 font-body font-light text-base sm:text-lg"
+            style={{ letterSpacing: "0.05em" }}
+          >
+            {WEDDING_CONFIG.date.display}
+          </span>
+          <span className="hidden sm:inline text-white/30 mx-4">&middot;</span>
+          <span
+            className="text-white/70 font-body font-light text-sm sm:text-base"
+            style={{ letterSpacing: "0.03em" }}
+          >
             {WEDDING_CONFIG.location.city}, {WEDDING_CONFIG.location.region}
-          </p>
+          </span>
         </motion.div>
 
-        {/* CTA Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+        {/* CTA - Outline elegante con destello dorado que recorre el borde */}
+        <motion.div variants={itemVariants}>
           <Link
             href="/confirmar"
-            className="inline-flex items-center justify-center bg-gold-300 hover:bg-gold-400 text-white font-medium px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            className={cn(
+              "group relative inline-flex items-center justify-center",
+              "px-10 py-4 sm:px-12 sm:py-5",
+              "text-sm sm:text-base font-medium tracking-wide",
+              "text-white",
+              "rounded-full",
+              "border border-white/30",
+              "transition-all duration-500 ease-out",
+              "hover:border-white/50 hover:bg-white/5",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+            )}
           >
-            Confirmar Asistencia
+            {/* Destello dorado que recorre el borde */}
+            <span
+              className="absolute -inset-px rounded-full pointer-events-none overflow-hidden"
+              style={{
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "exclude",
+                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                padding: "1px",
+              }}
+            >
+              <span
+                className="absolute inset-[-50%] animate-[borderSpin_4s_linear_infinite]"
+                style={{
+                  background: "conic-gradient(from 0deg, transparent 0%, transparent 70%, #D4AF37 80%, transparent 90%, transparent 100%)",
+                }}
+              />
+            </span>
+
+            <span className="relative">Confirmar Asistencia</span>
           </Link>
         </motion.div>
+      </motion.div>
 
-        {/* Scroll indicator */}
+      {/* ===== SCROLL INDICATOR ===== */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.8 }}
+        className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2"
+      >
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 flex flex-col items-center gap-2"
-        >
-          <span className="text-white/60 text-xs uppercase tracking-widest">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-white/60"
-            >
-              <path d="M12 5v14M5 12l7 7 7-7" />
-            </svg>
-          </motion.div>
-        </motion.div>
-      </div>
+          className="w-px h-10 bg-gradient-to-b from-white/50 to-transparent"
+          animate={{
+            scaleY: [1, 0.6, 1],
+            opacity: [0.5, 0.25, 0.5],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </motion.div>
     </section>
   );
 }

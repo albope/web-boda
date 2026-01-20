@@ -43,6 +43,9 @@ const config: Config = {
         display: ["var(--font-playfair)", "serif"],
         body: ["var(--font-inter)", "sans-serif"],
       },
+      fontWeight: {
+        light: "300",
+      },
       fontSize: {
         "display-xl": ["4.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
         "display-lg": ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],

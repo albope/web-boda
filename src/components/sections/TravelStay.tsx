@@ -82,17 +82,17 @@ export function TravelStay() {
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-gold-300" />
-            <MapPin className="w-5 h-5 text-gold-400" aria-hidden="true" />
+            <Car className="w-5 h-5 text-gold-400" aria-hidden="true" />
             <div className="h-px w-12 bg-gold-300" />
           </div>
           <h2
             id="travel-stay-title"
             className="font-display text-3xl sm:text-4xl text-stone-800 mb-4"
           >
-            Cómo Llegar y Alojamiento
+            Información Práctica
           </h2>
           <p className="text-stone-600 max-w-2xl mx-auto">
-            Toda la información que necesitas para planificar tu viaje
+            Para los que venís de fuera, aquí tenéis todo lo necesario
           </p>
         </motion.div>
 
@@ -105,7 +105,7 @@ export function TravelStay() {
           className="mb-16"
         >
           <h3 className="font-display text-2xl text-stone-800 mb-8 text-center">
-            Cómo llegar
+            Llegar a Jumilla
           </h3>
           <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
             {transportOptions.map((option, index) => (
