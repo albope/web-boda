@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -96,10 +96,12 @@ function Monogram({ className, variant = "gold" }: { className?: string; variant
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // Use dark logo on pages with light backgrounds
-  const isLightBackground = pathname === "/confirmar";
+  // Reducir tamaño del logo en páginas con títulos que se solapan
+  const isCompactLogo = pathname === "/detalles" || pathname === "/confirmar";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,7 +130,10 @@ export function Header() {
         style={{ pointerEvents: isScrolled ? "none" : "auto" }}
       >
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <div className="flex items-center justify-center h-20 lg:h-24">
+          <div className={cn(
+              "flex items-center justify-center",
+              isCompactLogo ? "h-14 lg:h-16" : "h-20 lg:h-24"
+            )}>
             {/* Solo el logo centrado - SIN hamburguesa ni CTA */}
             <Link href="/" className="group pointer-events-auto">
               <motion.div
@@ -137,7 +142,10 @@ export function Header() {
                 transition={{ duration: 0.2 }}
                 className="drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
               >
-                <Monogram className="w-14 h-14 lg:w-16 lg:h-16" variant={isLightBackground ? "dark" : "white"} />
+                <Monogram
+                  className={isCompactLogo ? "w-10 h-10 lg:w-12 lg:h-12" : "w-14 h-14 lg:w-16 lg:h-16"}
+                  variant="gold"
+                />
               </motion.div>
             </Link>
           </div>
@@ -340,7 +348,23 @@ export function Header() {
               </div>
 
               {/* Navigation links - Editorial numbered index style */}
-              <div className="py-8 px-6">
+              <div
+                ref={menuRef}
+                className="py-8 px-6"
+                onTouchMove={(e) => {
+                  const touch = e.touches[0];
+                  const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+                  const linkElement = elements.find(el => el.getAttribute('data-nav-index'));
+                  if (linkElement) {
+                    const idx = parseInt(linkElement.getAttribute('data-nav-index') || '-1');
+                    setHoveredIndex(idx);
+                  } else {
+                    setHoveredIndex(null);
+                  }
+                }}
+                onTouchEnd={() => setHoveredIndex(null)}
+                onTouchCancel={() => setHoveredIndex(null)}
+              >
                 {navLinks.map((link, index) => (
                   <motion.div
                     key={link.href}
@@ -348,18 +372,45 @@ export function Header() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.05 }}
                   >
-                    <Link
-                      href={link.href}
-                      className="flex items-baseline gap-3 py-4 text-stone-700 hover:text-stone-900 border-b border-gold-100/50 transition-colors group"
-                      onClick={closeMenu}
+                    <motion.div
+                      data-nav-index={index}
+                      animate={{
+                        backgroundColor: hoveredIndex === index ? "rgba(212, 175, 55, 0.15)" : "rgba(0, 0, 0, 0)",
+                        x: hoveredIndex === index ? 4 : 0
+                      }}
+                      whileHover={{
+                        backgroundColor: "rgba(212, 175, 55, 0.1)",
+                        x: 4
+                      }}
+                      whileTap={{
+                        backgroundColor: "rgba(212, 175, 55, 0.15)",
+                        x: 4
+                      }}
+                      transition={{ duration: 0.15 }}
+                      className="rounded-lg -mx-2"
+                      onTouchStart={() => setHoveredIndex(index)}
                     >
-                      <span className="font-display text-xs text-gold-300/70 tabular-nums">
-                        {String(index + 1).padStart(2, '0')}.
-                      </span>
-                      <span className="font-display text-2xl group-hover:translate-x-1 transition-transform">
-                        {link.label}
-                      </span>
-                    </Link>
+                      <Link
+                        href={link.href}
+                        data-nav-index={index}
+                        className={cn(
+                          "flex items-baseline gap-3 py-4 px-2 border-b border-gold-100/50 transition-colors duration-150",
+                          hoveredIndex === index ? "text-gold-500" : "text-stone-700",
+                          "hover:text-gold-500 active:text-gold-500"
+                        )}
+                        onClick={closeMenu}
+                      >
+                        <span className={cn(
+                          "font-display text-xs tabular-nums transition-colors duration-150",
+                          hoveredIndex === index ? "text-gold-500" : "text-gold-300/70"
+                        )}>
+                          {String(index + 1).padStart(2, '0')}.
+                        </span>
+                        <span className="font-display text-2xl transition-colors duration-150">
+                          {link.label}
+                        </span>
+                      </Link>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>

@@ -5,11 +5,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Heart } from "lucide-react";
+import { Check, Heart, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { cn } from "@/lib/utils";
+import { submitRSVP } from "@/app/actions/rsvp";
 
 const rsvpSchema = z.object({
   nombre: z
@@ -39,6 +40,7 @@ type RSVPFormData = z.infer<typeof rsvpSchema>;
 export function RSVPForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<RSVPFormData | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -55,10 +57,23 @@ export function RSVPForm() {
   const asiste = watch("asiste");
 
   const onSubmit = async (data: RSVPFormData) => {
-    // Simulate API call (replace with actual Supabase call later)
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setSubmitError(null);
 
-    console.log("RSVP Data:", data);
+    const result = await submitRSVP({
+      nombre: data.nombre,
+      email: data.email || undefined,
+      telefono: data.telefono || undefined,
+      asiste: data.asiste === "si",
+      alergias: data.alergias || undefined,
+      menuEspecial: data.menuEspecial || undefined,
+      mensaje: data.mensaje || undefined,
+    });
+
+    if (!result.success) {
+      setSubmitError(result.error || "Ha ocurrido un error. Por favor, inténtalo de nuevo.");
+      return;
+    }
+
     setSubmittedData(data);
     setIsSubmitted(true);
   };
@@ -266,6 +281,19 @@ export function RSVPForm() {
           error={errors.mensaje?.message}
           {...register("mensaje")}
         />
+
+        {/* Error message */}
+        {submitError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700"
+            role="alert"
+          >
+            <AlertCircle className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+            <p className="text-sm">{submitError}</p>
+          </motion.div>
+        )}
 
         {/* Submit */}
         <Button
