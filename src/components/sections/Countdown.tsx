@@ -250,7 +250,10 @@ export function Countdown() {
           className="mt-12"
         >
           <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-gold-100 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-gold-300 animate-pulse" />
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-300 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-400" />
+            </span>
             <span className="text-stone-600 text-sm font-medium">
               {WEDDING_CONFIG.date.day}, {WEDDING_CONFIG.date.display}
             </span>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { WEDDING_CONFIG } from "@/config/wedding";
 import { cn } from "@/lib/utils";
@@ -10,12 +11,17 @@ const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/detalles", label: "Detalles" },
   { href: "/#como-llegar", label: "Ubicación" },
+  { href: "/confirmar", label: "Confirmar Asistencia" },
 ];
 
 // Elegant Monogram Component - Luxury brand style with intense gold
-function Monogram({ className, variant = "gold" }: { className?: string; variant?: "gold" | "white" }) {
-  const color = variant === "white" ? "#FFFFFF" : "#D4AF37";
-  const colorIntense = variant === "white" ? "#FFFFFF" : "#C9A227";
+function Monogram({ className, variant = "gold" }: { className?: string; variant?: "gold" | "white" | "dark" }) {
+  const colors = {
+    white: { color: "#FFFFFF", colorIntense: "#FFFFFF" },
+    gold: { color: "#D4AF37", colorIntense: "#C9A227" },
+    dark: { color: "#78716c", colorIntense: "#57534e" }, // stone-500 / stone-600
+  };
+  const { color, colorIntense } = colors[variant];
 
   return (
     <svg
@@ -90,6 +96,10 @@ function Monogram({ className, variant = "gold" }: { className?: string; variant
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Use dark logo on pages with light backgrounds
+  const isLightBackground = pathname === "/confirmar";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,7 +116,7 @@ export function Header() {
 
   return (
     <>
-      {/* INITIAL STATE - Only logo and hamburger over the hero */}
+      {/* INITIAL STATE - Only logo centered over the hero - ultra clean */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isScrolled ? 0 : 1 }}
@@ -118,8 +128,8 @@ export function Header() {
         style={{ pointerEvents: isScrolled ? "none" : "auto" }}
       >
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Logo only */}
+          <div className="flex items-center justify-center h-20 lg:h-24">
+            {/* Solo el logo centrado - SIN hamburguesa ni CTA */}
             <Link href="/" className="group pointer-events-auto">
               <motion.div
                 whileHover={{ scale: 1.08 }}
@@ -127,59 +137,14 @@ export function Header() {
                 transition={{ duration: 0.2 }}
                 className="drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
               >
-                <Monogram className="w-14 h-14 lg:w-16 lg:h-16" variant="white" />
+                <Monogram className="w-14 h-14 lg:w-16 lg:h-16" variant={isLightBackground ? "dark" : "white"} />
               </motion.div>
             </Link>
-
-            {/* Mobile hamburger only */}
-            <button
-              type="button"
-              className={cn(
-                "md:hidden pointer-events-auto relative w-12 h-12 rounded-full transition-all duration-300",
-                "flex items-center justify-center",
-                "bg-black/20 backdrop-blur-sm hover:bg-black/30",
-                isMenuOpen && "bg-black/40"
-              )}
-              onClick={toggleMenu}
-              aria-expanded={isMenuOpen}
-              aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-            >
-              <div className="relative w-5 h-4">
-                <span
-                  className={cn(
-                    "absolute left-0 w-5 h-[2px] bg-white rounded-full transition-all duration-300 ease-out origin-center",
-                    isMenuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "absolute left-0 top-1/2 -translate-y-1/2 w-5 h-[2px] bg-white rounded-full transition-all duration-300 ease-out",
-                    isMenuOpen ? "opacity-0 scale-x-0" : "opacity-100"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "absolute left-0 w-5 h-[2px] bg-white rounded-full transition-all duration-300 ease-out origin-center",
-                    isMenuOpen ? "bottom-1/2 translate-y-1/2 -rotate-45" : "bottom-0"
-                  )}
-                />
-              </div>
-            </button>
-
-            {/* Desktop - minimal nav visible on hero */}
-            <div className="hidden md:flex items-center gap-3 pointer-events-auto">
-              <Link
-                href="/confirmar"
-                className="px-5 py-2.5 bg-white/15 backdrop-blur-sm text-white border border-white/40 rounded-full text-sm font-medium hover:bg-white/25 transition-all duration-300"
-              >
-                Confirmar Asistencia
-              </Link>
-            </div>
           </div>
         </div>
       </motion.div>
 
-      {/* SCROLLED STATE - Full header with subtle background */}
+      {/* SCROLLED STATE - Editorial Luxury header with cream background */}
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{
@@ -189,11 +154,11 @@ export function Header() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-0 left-0 right-0 z-50"
       >
-        <div className="mt-3 mx-auto max-w-5xl px-4">
-          <div className="bg-stone-900/85 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.2)] border border-stone-700/30 rounded-full">
-            <div className="px-5 lg:px-6">
-              <div className="flex items-center justify-between h-14">
-                {/* Logo - intense gold */}
+        {/* Full width container - no padding on mobile for edge-to-edge */}
+        <div className="bg-white/95 backdrop-blur-xl shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.06)] border-b border-gold-200/30">
+          <div className="px-4 sm:px-6 lg:px-12">
+              <div className="flex items-center justify-between h-16">
+                {/* Logo - gold with dark text */}
                 <Link href="/" className="group flex items-center gap-3" onClick={closeMenu}>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -203,76 +168,137 @@ export function Header() {
                     <Monogram className="w-10 h-10" variant="gold" />
                   </motion.div>
 
-                  {/* Names on larger screens */}
-                  <span className="hidden lg:block font-display text-lg text-white/90">
+                  {/* Names on larger screens - dark text for light background */}
+                  <span className="hidden lg:block font-display text-lg text-stone-800">
                     {WEDDING_CONFIG.couple.partner1}
-                    <span className="text-gold-300 mx-1.5">&</span>
+                    <span className="text-gold-400 mx-1.5">&</span>
                     {WEDDING_CONFIG.couple.partner2}
                   </span>
                 </Link>
 
-                {/* Desktop Navigation */}
+                {/* Desktop Navigation - Editorial style with gold underline */}
                 <nav className="hidden md:flex items-center gap-1" aria-label="Navegación principal">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="px-4 py-2 text-sm font-medium text-stone-300 hover:text-white rounded-full hover:bg-white/10 transition-all duration-200"
+                      className="px-4 py-2 text-sm font-medium text-stone-600 hover:text-stone-800 transition-colors relative after:absolute after:bottom-1 after:left-4 after:right-4 after:h-px after:bg-gold-300 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
                     >
                       {link.label}
                     </Link>
                   ))}
 
-                  {/* CTA Button - Gold */}
+                  {/* CTA Button - Gold with white text */}
                   <Link
                     href="/confirmar"
-                    className="ml-2 px-5 py-2 bg-gradient-to-r from-gold-300 to-gold-400 text-stone-900 text-sm font-semibold rounded-full shadow-lg shadow-gold-400/20 hover:shadow-gold-400/40 hover:scale-[1.02] transition-all duration-300"
+                    className="ml-3 px-5 py-2 bg-gradient-to-r from-gold-300 to-gold-400 text-white text-sm font-semibold rounded-full shadow-sm hover:shadow-lg hover:shadow-gold-400/25 hover:scale-[1.02] transition-all duration-300"
                   >
                     Confirmar
                   </Link>
                 </nav>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu Button - Three Dots Wave → X Animation */}
                 <button
                   type="button"
-                  className={cn(
-                    "md:hidden relative w-10 h-10 rounded-full transition-all duration-300",
-                    "flex items-center justify-center",
-                    "hover:bg-white/10",
-                    isMenuOpen && "bg-white/10"
-                  )}
                   onClick={toggleMenu}
+                  className="md:hidden flex items-center justify-center w-12 h-12 rounded-full hover:bg-stone-100/30 transition-colors"
                   aria-expanded={isMenuOpen}
                   aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
                 >
-                  <div className="relative w-5 h-4">
-                    <span
-                      className={cn(
-                        "absolute left-0 w-5 h-[1.5px] bg-white rounded-full transition-all duration-300 ease-out origin-center",
-                        isMenuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
-                      )}
+                  <div className="relative w-6 h-6 flex items-center justify-center">
+                    {/* Dot 1 (left) → transforms to top-left of X */}
+                    <motion.span
+                      className="absolute bg-gold-400"
+                      animate={
+                        isMenuOpen
+                          ? {
+                              width: 18,
+                              height: 2,
+                              borderRadius: 2,
+                              rotate: 45,
+                              x: 0,
+                              y: 0,
+                            }
+                          : {
+                              width: 6,
+                              height: 6,
+                              borderRadius: 6,
+                              rotate: 0,
+                              x: -8,
+                              y: [0, -4, 0],
+                            }
+                      }
+                      transition={{
+                        duration: isMenuOpen ? 0.3 : 0.5,
+                        delay: isMenuOpen ? 0 : 0,
+                        repeat: isMenuOpen ? 0 : Infinity,
+                        repeatDelay: 2,
+                        ease: "easeInOut",
+                      }}
                     />
-                    <span
-                      className={cn(
-                        "absolute left-0 top-1/2 -translate-y-1/2 w-5 h-[1.5px] bg-white rounded-full transition-all duration-300 ease-out",
-                        isMenuOpen ? "opacity-0 scale-x-0" : "opacity-100"
-                      )}
+                    {/* Dot 2 (center) → fades out for X */}
+                    <motion.span
+                      className="absolute bg-gold-400 rounded-full"
+                      animate={
+                        isMenuOpen
+                          ? {
+                              width: 0,
+                              height: 0,
+                              opacity: 0,
+                            }
+                          : {
+                              width: 6,
+                              height: 6,
+                              opacity: 1,
+                              y: [0, -4, 0],
+                            }
+                      }
+                      transition={{
+                        duration: isMenuOpen ? 0.2 : 0.5,
+                        delay: isMenuOpen ? 0 : 0.1,
+                        repeat: isMenuOpen ? 0 : Infinity,
+                        repeatDelay: 2,
+                        ease: "easeInOut",
+                      }}
                     />
-                    <span
-                      className={cn(
-                        "absolute left-0 w-5 h-[1.5px] bg-white rounded-full transition-all duration-300 ease-out origin-center",
-                        isMenuOpen ? "bottom-1/2 translate-y-1/2 -rotate-45" : "bottom-0"
-                      )}
+                    {/* Dot 3 (right) → transforms to bottom-right of X */}
+                    <motion.span
+                      className="absolute bg-gold-400"
+                      animate={
+                        isMenuOpen
+                          ? {
+                              width: 18,
+                              height: 2,
+                              borderRadius: 2,
+                              rotate: -45,
+                              x: 0,
+                              y: 0,
+                            }
+                          : {
+                              width: 6,
+                              height: 6,
+                              borderRadius: 6,
+                              rotate: 0,
+                              x: 8,
+                              y: [0, -4, 0],
+                            }
+                      }
+                      transition={{
+                        duration: isMenuOpen ? 0.3 : 0.5,
+                        delay: isMenuOpen ? 0 : 0.2,
+                        repeat: isMenuOpen ? 0 : Infinity,
+                        repeatDelay: 2,
+                        ease: "easeInOut",
+                      }}
                     />
                   </div>
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      </motion.header>
+        </motion.header>
 
-      {/* Mobile Menu - Elegant dark overlay */}
+      {/* Mobile Menu - Editorial Luxury side panel */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -282,76 +308,62 @@ export function Header() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 md:hidden"
           >
-            {/* Backdrop */}
+            {/* Backdrop - lighter, more elegant */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/70 backdrop-blur-md"
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               onClick={closeMenu}
             />
 
-            {/* Menu panel */}
+            {/* Menu panel - Right side slide, cream background */}
             <motion.nav
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-24 left-4 right-4 bg-stone-900/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-stone-700/50 overflow-hidden"
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-cream-50 border-l border-gold-200/30 shadow-[-20px_0_60px_rgba(0,0,0,0.1)]"
               aria-label="Navegación móvil"
             >
-              {/* Header with monogram */}
-              <div className="px-6 pt-6 pb-4 border-b border-stone-700/50">
-                <div className="flex items-center gap-3">
-                  <Monogram className="w-12 h-12" variant="gold" />
+              {/* Header with monogram - Editorial style */}
+              <div className="pt-20 px-6 pb-6 border-b border-gold-100/50">
+                <div className="flex items-center gap-4">
+                  <Monogram className="w-14 h-14" variant="gold" />
                   <div>
-                    <p className="font-display text-white">
+                    <p className="font-display text-xl text-stone-800">
                       {WEDDING_CONFIG.couple.partner1} & {WEDDING_CONFIG.couple.partner2}
                     </p>
-                    <p className="text-xs text-gold-300/80">{WEDDING_CONFIG.date.display}</p>
+                    <p className="text-sm text-gold-400">{WEDDING_CONFIG.date.display}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Navigation links */}
-              <div className="p-3">
+              {/* Navigation links - Editorial numbered index style */}
+              <div className="py-8 px-6">
                 {navLinks.map((link, index) => (
                   <motion.div
                     key={link.href}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.05 }}
                   >
                     <Link
                       href={link.href}
-                      className="flex items-center px-4 py-4 text-stone-200 hover:text-white hover:bg-white/5 rounded-2xl transition-colors font-medium"
+                      className="flex items-baseline gap-3 py-4 text-stone-700 hover:text-stone-900 border-b border-gold-100/50 transition-colors group"
                       onClick={closeMenu}
                     >
-                      {link.label}
+                      <span className="font-display text-xs text-gold-300/70 tabular-nums">
+                        {String(index + 1).padStart(2, '0')}.
+                      </span>
+                      <span className="font-display text-2xl group-hover:translate-x-1 transition-transform">
+                        {link.label}
+                      </span>
                     </Link>
                   </motion.div>
                 ))}
               </div>
 
-              {/* CTA */}
-              <div className="p-4 pt-2">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25 }}
-                >
-                  <Link
-                    href="/confirmar"
-                    className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gradient-to-r from-gold-300 to-gold-400 text-stone-900 font-semibold rounded-2xl transition-all hover:shadow-lg hover:shadow-gold-400/30"
-                    onClick={closeMenu}
-                  >
-                    Confirmar Asistencia
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </Link>
-                </motion.div>
-              </div>
             </motion.nav>
           </motion.div>
         )}
