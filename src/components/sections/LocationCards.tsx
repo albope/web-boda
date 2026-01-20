@@ -10,6 +10,7 @@ interface LocationCardProps {
   address: string;
   time: string;
   mapsUrl: string;
+  embedUrl: string;
   delay: number;
 }
 
@@ -19,6 +20,7 @@ function LocationCard({
   address,
   time,
   mapsUrl,
+  embedUrl,
   delay,
 }: LocationCardProps) {
   return (
@@ -27,31 +29,45 @@ function LocationCard({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
       viewport={{ once: true }}
-      className="bg-white rounded-2xl p-6 shadow-sm"
+      className="bg-white rounded-2xl overflow-hidden shadow-sm"
     >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 bg-gold-50 rounded-full">
-          <MapPin className="w-5 h-5 text-gold-400" aria-hidden="true" />
-        </div>
-        <div>
-          <span className="text-sm text-gold-400 font-medium">{title}</span>
-          <span className="text-stone-400 mx-2">·</span>
-          <span className="text-sm text-stone-500">{time}</span>
-        </div>
+      <div className="w-full aspect-video">
+        <iframe
+          src={embedUrl}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title={`Mapa de ${name}`}
+        />
       </div>
+      <div className="p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 bg-gold-50 rounded-full">
+            <MapPin className="w-5 h-5 text-gold-400" aria-hidden="true" />
+          </div>
+          <div>
+            <span className="text-sm text-gold-400 font-medium">{title}</span>
+            <span className="text-stone-400 mx-2">·</span>
+            <span className="text-sm text-stone-500">{time}</span>
+          </div>
+        </div>
 
-      <h3 className="font-display text-xl text-stone-800 mb-2">{name}</h3>
-      <p className="text-stone-500 text-sm mb-4">{address}</p>
+        <h3 className="font-display text-xl text-stone-800 mb-2">{name}</h3>
+        <p className="text-stone-500 text-sm mb-4">{address}</p>
 
-      <a
-        href={mapsUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-500 font-medium text-sm transition-colors"
-      >
-        <span>Cómo llegar</span>
-        <ExternalLink className="w-4 h-4" aria-hidden="true" />
-      </a>
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-gold-400 hover:text-gold-500 font-medium text-sm transition-colors"
+        >
+          <span>Cómo llegar</span>
+          <ExternalLink className="w-4 h-4" aria-hidden="true" />
+        </a>
+      </div>
     </motion.div>
   );
 }
@@ -88,6 +104,7 @@ export function LocationCards() {
             address={WEDDING_CONFIG.ceremony.address}
             time={WEDDING_CONFIG.ceremony.time}
             mapsUrl={WEDDING_CONFIG.ceremony.googleMapsUrl}
+            embedUrl={WEDDING_CONFIG.ceremony.embedUrl}
             delay={0.1}
           />
           <LocationCard
@@ -96,6 +113,7 @@ export function LocationCards() {
             address={WEDDING_CONFIG.reception.address}
             time={WEDDING_CONFIG.reception.time}
             mapsUrl={WEDDING_CONFIG.reception.googleMapsUrl}
+            embedUrl={WEDDING_CONFIG.reception.embedUrl}
             delay={0.2}
           />
         </div>

@@ -17,14 +17,16 @@ export const WEDDING_CONFIG = {
     time: "12:00",
     name: "Iglesia Mayor de Santiago",
     address: "Plaza de Arriba, Jumilla, Murcia",
-    googleMapsUrl: "https://share.google/rjcgcxurhw1VkiyJd",
+    googleMapsUrl: "https://maps.app.goo.gl/BqBRH6r7kyTrATXc9",
+    embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d-1.3344955!3d38.4760252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd640f870cf0f54b%3A0x89bd09ae5ff43d4e!2sIglesia%20Mayor%20de%20Santiago!5e0!3m2!1ses!2ses",
     description: "Ceremonia religiosa",
   },
   reception: {
     time: "14:00",
     name: "Salones Media Luna",
     address: "Jumilla, Murcia",
-    googleMapsUrl: "https://share.google/iifmPf3zsYS2whyzO",
+    googleMapsUrl: "https://maps.app.goo.gl/yksXpNXYix6XpaAd7",
+    embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d-1.3154651!3d38.5030819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6405bc8e82b7d1%3A0xc7f82bd2b921638a!2sMedia%20Luna!5e0!3m2!1ses!2ses",
     description: "Banquete y celebración",
   },
   schedule: [

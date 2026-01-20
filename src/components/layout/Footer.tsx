@@ -3,9 +3,9 @@ import { WEDDING_CONFIG } from "@/config/wedding";
 
 export function Footer() {
   return (
-    <footer className="bg-stone-800 text-cream-100 py-8 mt-auto">
+    <footer className="bg-stone-800 text-cream-100 pt-8 pb-12 sm:py-8 mt-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-        <div className="flex items-center justify-center gap-2 mb-4">
+        <div className="flex items-center justify-center gap-2 mb-3">
           <span className="font-display text-lg">
             {WEDDING_CONFIG.couple.partner1}
           </span>
@@ -15,17 +15,17 @@ export function Footer() {
           </span>
         </div>
 
-        <p className="text-cream-400 text-sm mb-4">
+        <p className="text-cream-300 text-sm mb-3">
           {WEDDING_CONFIG.date.display}
         </p>
 
         {WEDDING_CONFIG.social.hashtag && (
-          <p className="text-gold-300 text-sm font-medium">
+          <p className="text-gold-300 text-sm font-medium mb-4">
             {WEDDING_CONFIG.social.hashtag}
           </p>
         )}
 
-        <p className="text-cream-500 text-xs mt-6">
+        <p className="text-cream-400 text-xs">
           Gracias por ser parte de nuestra historia
         </p>
       </div>
