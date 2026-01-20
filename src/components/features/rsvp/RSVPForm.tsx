@@ -1,0 +1,282 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, Heart } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Textarea } from "@/components/ui/Textarea";
+import { cn } from "@/lib/utils";
+
+const rsvpSchema = z.object({
+  nombre: z
+    .string()
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(100, "El nombre es demasiado largo"),
+  email: z
+    .string()
+    .email("Por favor, introduce un email válido")
+    .optional()
+    .or(z.literal("")),
+  telefono: z
+    .string()
+    .regex(/^[+]?[\d\s-]{9,15}$/, "Por favor, introduce un teléfono válido")
+    .optional()
+    .or(z.literal("")),
+  asiste: z.enum(["si", "no"], {
+    message: "Por favor, indica si asistirás",
+  }),
+  alergias: z.string().max(500, "El texto es demasiado largo").optional(),
+  menuEspecial: z.string().max(200, "El texto es demasiado largo").optional(),
+  mensaje: z.string().max(500, "El mensaje es demasiado largo").optional(),
+});
+
+type RSVPFormData = z.infer<typeof rsvpSchema>;
+
+export function RSVPForm() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, setSubmittedData] = useState<RSVPFormData | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<RSVPFormData>({
+    resolver: zodResolver(rsvpSchema),
+    defaultValues: {
+      asiste: undefined,
+    },
+  });
+
+  const asiste = watch("asiste");
+
+  const onSubmit = async (data: RSVPFormData) => {
+    // Simulate API call (replace with actual Supabase call later)
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    console.log("RSVP Data:", data);
+    setSubmittedData(data);
+    setIsSubmitted(true);
+  };
+
+  if (isSubmitted && submittedData) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white rounded-2xl p-8 sm:p-10 shadow-sm text-center max-w-lg mx-auto"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6"
+        >
+          <Check className="w-10 h-10 text-green-600" aria-hidden="true" />
+        </motion.div>
+
+        <h2 className="font-display text-2xl sm:text-3xl text-stone-800 mb-4">
+          {submittedData.asiste === "si"
+            ? "¡Gracias por confirmar!"
+            : "Gracias por avisarnos"}
+        </h2>
+
+        <p className="text-stone-600 mb-6">
+          {submittedData.asiste === "si" ? (
+            <>
+              Hemos registrado tu confirmación, <strong>{submittedData.nombre}</strong>.
+              <br />
+              ¡Te esperamos con mucha ilusión!
+            </>
+          ) : (
+            <>
+              Lamentamos que no puedas acompañarnos, <strong>{submittedData.nombre}</strong>.
+              <br />
+              ¡Gracias por hacérnoslo saber!
+            </>
+          )}
+        </p>
+
+        <div className="flex items-center justify-center gap-2 text-gold-400">
+          <Heart className="w-5 h-5 fill-gold-300" aria-hidden="true" />
+          <span className="font-medium">Alberto & Carmen</span>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm max-w-lg mx-auto"
+    >
+      <div className="space-y-6">
+        {/* Nombre */}
+        <Input
+          label="Nombre completo"
+          placeholder="Tu nombre y apellidos"
+          required
+          error={errors.nombre?.message}
+          {...register("nombre")}
+        />
+
+        {/* Email */}
+        <Input
+          label="Email"
+          type="email"
+          placeholder="tu@email.com"
+          helperText="Para enviarte un recordatorio (opcional)"
+          error={errors.email?.message}
+          {...register("email")}
+        />
+
+        {/* Teléfono */}
+        <Input
+          label="Teléfono"
+          type="tel"
+          placeholder="+34 600 000 000"
+          helperText="Para cualquier comunicación de última hora (opcional)"
+          error={errors.telefono?.message}
+          {...register("telefono")}
+        />
+
+        {/* Asistencia */}
+        <div>
+          <p className="block text-sm font-medium text-stone-700 mb-3">
+            ¿Asistirás a la boda?
+            <span className="text-red-500 ml-1" aria-hidden="true">
+              *
+            </span>
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <label
+              className={cn(
+                "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                asiste === "si"
+                  ? "border-gold-300 bg-gold-50"
+                  : "border-stone-200 hover:border-stone-300"
+              )}
+            >
+              <input
+                type="radio"
+                value="si"
+                className="sr-only"
+                {...register("asiste")}
+              />
+              <span
+                className={cn(
+                  "text-2xl mb-1",
+                  asiste === "si" ? "grayscale-0" : "grayscale"
+                )}
+                aria-hidden="true"
+              >
+                🎉
+              </span>
+              <span
+                className={cn(
+                  "font-medium",
+                  asiste === "si" ? "text-gold-500" : "text-stone-600"
+                )}
+              >
+                ¡Sí, asistiré!
+              </span>
+            </label>
+
+            <label
+              className={cn(
+                "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                asiste === "no"
+                  ? "border-stone-400 bg-stone-50"
+                  : "border-stone-200 hover:border-stone-300"
+              )}
+            >
+              <input
+                type="radio"
+                value="no"
+                className="sr-only"
+                {...register("asiste")}
+              />
+              <span
+                className={cn(
+                  "text-2xl mb-1",
+                  asiste === "no" ? "grayscale-0" : "grayscale"
+                )}
+                aria-hidden="true"
+              >
+                😢
+              </span>
+              <span
+                className={cn(
+                  "font-medium",
+                  asiste === "no" ? "text-stone-700" : "text-stone-600"
+                )}
+              >
+                No podré asistir
+              </span>
+            </label>
+          </div>
+          {errors.asiste && (
+            <p className="mt-2 text-sm text-red-600" role="alert">
+              {errors.asiste.message}
+            </p>
+          )}
+        </div>
+
+        {/* Campos adicionales si asiste */}
+        <AnimatePresence>
+          {asiste === "si" && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6 overflow-hidden"
+            >
+              {/* Alergias */}
+              <Input
+                label="Alergias o intolerancias"
+                placeholder="Ej: Gluten, lactosa, frutos secos..."
+                helperText="Indícanos si tienes alguna alergia alimentaria"
+                error={errors.alergias?.message}
+                {...register("alergias")}
+              />
+
+              {/* Menú especial */}
+              <Input
+                label="Menú especial"
+                placeholder="Ej: Vegetariano, vegano, sin gluten..."
+                helperText="Si necesitas un tipo de menú especial"
+                error={errors.menuEspecial?.message}
+                {...register("menuEspecial")}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Mensaje */}
+        <Textarea
+          label="¿Quieres dejarnos algún mensaje?"
+          placeholder="Escríbenos lo que quieras..."
+          rows={4}
+          error={errors.mensaje?.message}
+          {...register("mensaje")}
+        />
+
+        {/* Submit */}
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          isLoading={isSubmitting}
+        >
+          Confirmar asistencia
+        </Button>
+      </div>
+    </form>
+  );
+}
