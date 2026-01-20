@@ -21,7 +21,7 @@ export default function ConfirmarPage() {
               <li>
                 <Link
                   href="/"
-                  className="text-stone-400 hover:text-gold-500 transition-colors"
+                  className="text-gold-600 hover:text-gold-700 transition-colors underline underline-offset-2"
                 >
                   Inicio
                 </Link>
