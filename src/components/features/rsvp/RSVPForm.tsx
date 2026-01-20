@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Heart, AlertCircle } from "lucide-react";
+import { Check, Heart, AlertCircle, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
@@ -38,6 +39,7 @@ const rsvpSchema = z.object({
 type RSVPFormData = z.infer<typeof rsvpSchema>;
 
 export function RSVPForm() {
+  const router = useRouter();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<RSVPFormData | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -117,10 +119,19 @@ export function RSVPForm() {
           )}
         </p>
 
-        <div className="flex items-center justify-center gap-2 text-gold-400">
+        <div className="flex items-center justify-center gap-2 text-gold-400 mb-6">
           <Heart className="w-5 h-5 fill-gold-300" aria-hidden="true" />
           <span className="font-medium">Alberto & Carmen</span>
         </div>
+
+        <Button
+          variant="outline"
+          onClick={() => router.push("/")}
+          className="inline-flex items-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          Volver al inicio
+        </Button>
       </motion.div>
     );
   }

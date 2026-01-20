@@ -19,12 +19,6 @@ export function Footer() {
           {WEDDING_CONFIG.date.display}
         </p>
 
-        {WEDDING_CONFIG.social.hashtag && (
-          <p className="text-gold-300 text-sm font-medium mb-4">
-            {WEDDING_CONFIG.social.hashtag}
-          </p>
-        )}
-
         <p className="text-cream-400 text-xs">
           Gracias por ser parte de nuestra historia
         </p>
