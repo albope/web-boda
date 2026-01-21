@@ -81,6 +81,15 @@ export const WEDDING_CONFIG = {
   social: {
     hashtag: "#AlbertoYCarmen2026",
   },
+  gift: {
+    title: "Lista de Bodas",
+    subtitle: "Vuestra presencia es el mejor regalo",
+    message:
+      "Para quienes deseéis acompañar vuestra presencia con un regalo, aquí tenéis los datos.",
+    iban: "ES00 0000 0000 0000 0000 0000", // Reemplazar con IBAN real
+    bankName: "Nombre del Banco",
+    accountHolder: "Alberto Bort / Carmen Palao",
+  },
 } as const;
 
 export type WeddingConfig = typeof WEDDING_CONFIG;

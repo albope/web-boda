@@ -159,7 +159,7 @@ export function RSVPTable({ responses }: RSVPTableProps) {
             )}
 
             {response.mensaje && (
-              <p className="text-sm text-stone-600 italic mb-2">"{response.mensaje}"</p>
+              <p className="text-sm text-stone-600 italic mb-2">&ldquo;{response.mensaje}&rdquo;</p>
             )}
 
             <p className="text-xs text-stone-400">{formatDate(response.created_at)}</p>

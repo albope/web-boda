@@ -19,6 +19,7 @@ const navLinksMobile = [
   { href: "/", label: "Inicio" },
   { href: "/detalles", label: "Detalles" },
   { href: "/#como-llegar", label: "Ubicación" },
+  { href: "/#lista-bodas", label: "Lista de Bodas" },
   { href: "/confirmar", label: "Confirmar Asistencia" },
 ];
 
@@ -383,54 +384,65 @@ export function Header() {
                 onTouchEnd={() => setHoveredIndex(null)}
                 onTouchCancel={() => setHoveredIndex(null)}
               >
-                {navLinksMobile.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + index * 0.05 }}
-                  >
+                {navLinksMobile.map((link, index) => {
+                  const isLastItem = index === navLinksMobile.length - 1;
+
+                  return (
                     <motion.div
-                      data-nav-index={index}
-                      animate={{
-                        backgroundColor: hoveredIndex === index ? "rgba(212, 175, 55, 0.15)" : "rgba(0, 0, 0, 0)",
-                        x: hoveredIndex === index ? 4 : 0
-                      }}
-                      whileHover={{
-                        backgroundColor: "rgba(212, 175, 55, 0.1)",
-                        x: 4
-                      }}
-                      whileTap={{
-                        backgroundColor: "rgba(212, 175, 55, 0.15)",
-                        x: 4
-                      }}
-                      transition={{ duration: 0.15 }}
-                      className="rounded-lg -mx-2"
-                      onTouchStart={() => setHoveredIndex(index)}
+                      key={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + index * 0.05 }}
                     >
-                      <Link
-                        href={link.href}
+                      <motion.div
                         data-nav-index={index}
-                        className={cn(
-                          "flex items-baseline gap-3 py-4 px-2 border-b border-gold-100/50 transition-colors duration-150",
-                          hoveredIndex === index ? "text-gold-500" : "text-stone-700",
-                          "hover:text-gold-500 active:text-gold-500"
-                        )}
-                        onClick={closeMenu}
+                        animate={{
+                          backgroundColor: hoveredIndex === index ? "rgba(212, 175, 55, 0.15)" : "rgba(0, 0, 0, 0)",
+                          x: hoveredIndex === index ? 4 : 0
+                        }}
+                        whileHover={{
+                          backgroundColor: "rgba(212, 175, 55, 0.1)",
+                          x: 4
+                        }}
+                        whileTap={{
+                          backgroundColor: "rgba(212, 175, 55, 0.15)",
+                          x: 4
+                        }}
+                        transition={{ duration: 0.15 }}
+                        className="rounded-lg -mx-2"
+                        onTouchStart={() => setHoveredIndex(index)}
                       >
-                        <span className={cn(
-                          "font-display text-xs tabular-nums transition-colors duration-150",
-                          hoveredIndex === index ? "text-gold-500" : "text-gold-300/70"
-                        )}>
-                          {String(index + 1).padStart(2, '0')}.
-                        </span>
-                        <span className="font-display text-2xl transition-colors duration-150">
-                          {link.label}
-                        </span>
-                      </Link>
+                        <Link
+                          href={link.href}
+                          data-nav-index={index}
+                          className={cn(
+                            "flex items-baseline gap-3 py-4 px-2 border-b border-gold-100/50 transition-colors duration-150",
+                            isLastItem
+                              ? "text-gold-400 hover:text-gold-500 active:text-gold-500"
+                              : cn(
+                                  hoveredIndex === index ? "text-gold-500" : "text-stone-700",
+                                  "hover:text-gold-500 active:text-gold-500"
+                                )
+                          )}
+                          onClick={closeMenu}
+                        >
+                          <span className={cn(
+                            "font-display text-xs tabular-nums transition-colors duration-150",
+                            isLastItem ? "text-gold-400" : (hoveredIndex === index ? "text-gold-500" : "text-gold-300/70")
+                          )}>
+                            {String(index + 1).padStart(2, '0')}.
+                          </span>
+                          <span className={cn(
+                            "font-display text-2xl transition-colors duration-150",
+                            isLastItem && "font-semibold"
+                          )}>
+                            {link.label}
+                          </span>
+                        </Link>
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
-                ))}
+                  );
+                })}
               </div>
 
             </motion.nav>
