@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Shirt } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
+import { WeatherWidget } from "@/components/ui/WeatherWidget";
 
 export function DressCode() {
   return (
@@ -34,6 +35,8 @@ export function DressCode() {
             {WEDDING_CONFIG.dressCode.description}
           </p>
         </motion.div>
+
+        <WeatherWidget className="mt-6" />
       </div>
     </section>
   );

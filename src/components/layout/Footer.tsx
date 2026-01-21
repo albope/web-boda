@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Heart, MessageCircle, Mail } from "lucide-react";
+import { Heart, MessageCircle, Mail, Cloud } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
 
 export function Footer() {
@@ -58,6 +58,15 @@ export function Footer() {
                   Cómo llegar
                 </a>
               </li>
+              <li>
+                <Link
+                  href="/detalles#dresscode-title"
+                  className="hover:text-gold-300 transition-colors inline-flex items-center gap-2"
+                >
+                  <Cloud className="w-4 h-4" aria-hidden="true" />
+                  Pronóstico del tiempo
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -101,12 +110,7 @@ export function Footer() {
         </div>
 
         {/* Línea divisoria */}
-        <div className="h-px bg-stone-700 mb-6" />
-
-        {/* Copyright */}
-        <p className="text-cream-500 text-xs text-center">
-          Hecho con amor para nuestro día especial
-        </p>
+        <div className="h-px bg-stone-700" />
       </div>
     </footer>
   );
