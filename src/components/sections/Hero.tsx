@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { WEDDING_CONFIG } from "@/config/wedding";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,7 @@ const itemVariants = {
     filter: "blur(0px)",
     transition: {
       duration: 0.8,
-      ease: [0.22, 1, 0.36, 1], // easeOutQuint
+      ease: [0.22, 1, 0.36, 1] as const, // easeOutQuint
     },
   },
 };
@@ -39,22 +40,28 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* ===== FONDOS ===== */}
 
-      {/* Desktop: Imagen estática - menos zoom para ver más contexto */}
-      <div
-        className="absolute inset-0 hidden md:block bg-no-repeat"
-        style={{
-          backgroundImage: "url('/images/hero.jpg')",
-          backgroundPosition: "center center",
-          backgroundSize: "115% auto"
-        }}
-      />
+      {/* Desktop: Imagen optimizada con next/image */}
+      <div className="absolute inset-0 hidden md:block">
+        <Image
+          src="/images/hero.jpg"
+          alt="Alberto y Carmen - Boda 14 de Noviembre de 2026"
+          fill
+          priority
+          quality={85}
+          className="object-cover object-center scale-[1.15]"
+          sizes="100vw"
+        />
+      </div>
 
-      {/* Mobile: Video autoplay */}
+      {/* Mobile: Video autoplay - optimizado con preload metadata y poster */}
       <video
         autoPlay
         muted
         loop
         playsInline
+        preload="metadata"
+        poster="/images/hero-poster.jpg"
+        aria-label="Video de fondo mostrando a Alberto y Carmen"
         className="absolute inset-0 w-full h-full object-cover md:hidden"
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
@@ -156,13 +163,14 @@ export function Hero() {
               "text-sm sm:text-base font-medium tracking-wide",
               "text-white",
               "rounded-full",
-              "border border-white/30",
+              "bg-white/10 backdrop-blur-sm",
+              "border border-white/40",
               "transition-all duration-500 ease-out",
-              "hover:border-white/50 hover:bg-white/5",
+              "hover:bg-white/20 hover:border-white/60",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
             )}
           >
-            {/* Destello dorado que recorre el borde */}
+            {/* Destello dorado que recorre el borde - usando animación CSS optimizada */}
             <span
               className="absolute -inset-px rounded-full pointer-events-none overflow-hidden"
               style={{
@@ -174,7 +182,7 @@ export function Hero() {
               }}
             >
               <span
-                className="absolute inset-[-50%] animate-[borderSpin_4s_linear_infinite]"
+                className="absolute inset-[-50%] animate-borderSpin will-change-transform"
                 style={{
                   background: "conic-gradient(from 0deg, transparent 0%, transparent 70%, #D4AF37 80%, transparent 90%, transparent 100%)",
                 }}
@@ -186,25 +194,14 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* ===== SCROLL INDICATOR ===== */}
+      {/* ===== SCROLL INDICATOR - CSS animation para mejor rendimiento ===== */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 1.8 }}
         className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2"
       >
-        <motion.div
-          className="w-px h-10 bg-gradient-to-b from-white/50 to-transparent"
-          animate={{
-            scaleY: [1, 0.6, 1],
-            opacity: [0.5, 0.25, 0.5],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        <div className="w-px h-10 bg-gradient-to-b from-white/50 to-transparent animate-scroll-hint will-change-transform origin-top" />
       </motion.div>
     </section>
   );

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
 import { WEDDING_CONFIG } from "@/config/wedding";
 import { cn } from "@/lib/utils";
 
@@ -74,15 +73,9 @@ interface CountdownUnitProps {
 
 function CountdownUnit({ value, label, delay, isSeconds = false }: CountdownUnitProps) {
   const prevValueRef = useRef(value);
-  const [isChanging, setIsChanging] = useState(false);
 
   useEffect(() => {
-    if (prevValueRef.current !== value) {
-      setIsChanging(true);
-      const timer = setTimeout(() => setIsChanging(false), 300);
-      prevValueRef.current = value;
-      return () => clearTimeout(timer);
-    }
+    prevValueRef.current = value;
   }, [value]);
 
   return (
@@ -129,13 +122,9 @@ function CountdownUnit({ value, label, delay, isSeconds = false }: CountdownUnit
           </AnimatePresence>
         </div>
 
-        {/* Pulse effect for seconds */}
+        {/* Pulse effect for seconds - CSS animation para mejor rendimiento */}
         {isSeconds && (
-          <motion.div
-            className="absolute inset-0 rounded-2xl bg-gold-300/10"
-            animate={{ opacity: [0, 0.5, 0] }}
-            transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="absolute inset-0 rounded-2xl bg-gold-300/10 animate-pulse-gold will-change-[opacity]" />
         )}
       </motion.div>
 
@@ -149,7 +138,9 @@ function CountdownUnit({ value, label, delay, isSeconds = false }: CountdownUnit
   );
 }
 
-function fireConfetti() {
+async function fireConfetti() {
+  const confetti = (await import("canvas-confetti")).default;
+
   const duration = 3000;
   const end = Date.now() + duration;
 

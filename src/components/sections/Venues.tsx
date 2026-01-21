@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { MapPin, ExternalLink } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
@@ -26,6 +27,27 @@ function VenueCard({
   delay,
 }: VenueCardProps) {
   const label = type === "ceremony" ? "Ceremonia" : "Banquete";
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer para lazy loading real del iframe
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" } // Pre-cargar 200px antes de que sea visible
+    );
+
+    if (mapContainerRef.current) {
+      observer.observe(mapContainerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.article
@@ -35,20 +57,27 @@ function VenueCard({
       viewport={{ once: true }}
       className="group bg-white rounded-2xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08),0_12px_32px_rgba(0,0,0,0.08)] transition-shadow duration-500"
     >
-      {/* Mapa embebido con contenedor estilizado */}
-      <div className="relative aspect-[4/3] bg-cream-100">
+      {/* Mapa embebido con contenedor estilizado y lazy loading real */}
+      <div ref={mapContainerRef} className="relative aspect-[4/3] bg-cream-100">
         <div className="absolute inset-0 rounded-t-xl overflow-hidden">
-          <iframe
-            src={embedUrl}
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title={`Mapa de ${name}`}
-            className="w-full h-full"
-          />
+          {shouldLoadMap ? (
+            <iframe
+              src={embedUrl}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={`Mapa de ${name}`}
+              className="w-full h-full"
+            />
+          ) : (
+            // Placeholder mientras no es visible
+            <div className="w-full h-full flex items-center justify-center bg-cream-100">
+              <MapPin className="w-8 h-8 text-gold-300/50 animate-pulse" aria-hidden="true" />
+            </div>
+          )}
         </div>
         {/* Borde sutil superior para integración */}
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-stone-200/50 to-transparent" />

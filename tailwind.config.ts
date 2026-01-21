@@ -57,6 +57,9 @@ const config: Config = {
         "fade-in-up": "fadeInUp 0.6s ease-out",
         "slide-up": "slideUp 0.5s ease-out",
         "pulse-soft": "pulseSoft 2s ease-in-out infinite",
+        "pulse-gold": "pulseGold 1s ease-in-out infinite",
+        "scroll-hint": "scrollHint 2.5s ease-in-out infinite",
+        borderSpin: "borderSpin 4s linear infinite",
       },
       keyframes: {
         fadeIn: {
@@ -74,6 +77,18 @@ const config: Config = {
         pulseSoft: {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.8" },
+        },
+        pulseGold: {
+          "0%, 100%": { opacity: "0" },
+          "50%": { opacity: "0.5" },
+        },
+        scrollHint: {
+          "0%, 100%": { transform: "scaleY(1)", opacity: "0.5" },
+          "50%": { transform: "scaleY(0.6)", opacity: "0.25" },
+        },
+        borderSpin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },

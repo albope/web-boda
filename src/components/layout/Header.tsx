@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,14 +22,22 @@ const navLinksMobile = [
   { href: "/confirmar", label: "Confirmar Asistencia" },
 ];
 
-// Elegant Monogram Component - Luxury brand style with intense gold
-function Monogram({ className, variant = "gold" }: { className?: string; variant?: "gold" | "white" | "dark" }) {
-  const colors = {
-    white: { color: "#FFFFFF", colorIntense: "#FFFFFF" },
-    gold: { color: "#D4AF37", colorIntense: "#C9A227" },
-    dark: { color: "#78716c", colorIntense: "#57534e" }, // stone-500 / stone-600
-  };
-  const { color, colorIntense } = colors[variant];
+// Colores del monograma extraídos para evitar recreación en cada render
+const MONOGRAM_COLORS = {
+  white: { color: "#FFFFFF", colorIntense: "#FFFFFF" },
+  gold: { color: "#D4AF37", colorIntense: "#C9A227" },
+  dark: { color: "#78716c", colorIntense: "#57534e" },
+} as const;
+
+// Elegant Monogram Component - Memoizado para evitar re-renders innecesarios
+const Monogram = memo(function Monogram({
+  className,
+  variant = "gold"
+}: {
+  className?: string;
+  variant?: keyof typeof MONOGRAM_COLORS;
+}) {
+  const { color, colorIntense } = MONOGRAM_COLORS[variant];
 
   return (
     <svg
@@ -99,12 +107,13 @@ function Monogram({ className, variant = "gold" }: { className?: string; variant
       <circle cx="30" cy="50" r="1.5" fill={color} opacity="0.6" />
     </svg>
   );
-}
+});
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hasAnimatedDots, setHasAnimatedDots] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -119,6 +128,14 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Detener animación de dots después de algunas repeticiones para ahorrar batería
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasAnimatedDots(true);
+    }, 6000); // 3 ciclos de animación (2s cada uno)
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -234,13 +251,13 @@ export function Header() {
                               borderRadius: 6,
                               rotate: 0,
                               x: -8,
-                              y: [0, -4, 0],
+                              y: hasAnimatedDots ? 0 : [0, -4, 0],
                             }
                       }
                       transition={{
                         duration: isMenuOpen ? 0.3 : 0.5,
                         delay: isMenuOpen ? 0 : 0,
-                        repeat: isMenuOpen ? 0 : Infinity,
+                        repeat: (isMenuOpen || hasAnimatedDots) ? 0 : 2,
                         repeatDelay: 2,
                         ease: "easeInOut",
                       }}
@@ -259,13 +276,13 @@ export function Header() {
                               width: 6,
                               height: 6,
                               opacity: 1,
-                              y: [0, -4, 0],
+                              y: hasAnimatedDots ? 0 : [0, -4, 0],
                             }
                       }
                       transition={{
                         duration: isMenuOpen ? 0.2 : 0.5,
                         delay: isMenuOpen ? 0 : 0.1,
-                        repeat: isMenuOpen ? 0 : Infinity,
+                        repeat: (isMenuOpen || hasAnimatedDots) ? 0 : 2,
                         repeatDelay: 2,
                         ease: "easeInOut",
                       }}
@@ -289,13 +306,13 @@ export function Header() {
                               borderRadius: 6,
                               rotate: 0,
                               x: 8,
-                              y: [0, -4, 0],
+                              y: hasAnimatedDots ? 0 : [0, -4, 0],
                             }
                       }
                       transition={{
                         duration: isMenuOpen ? 0.3 : 0.5,
                         delay: isMenuOpen ? 0 : 0.2,
-                        repeat: isMenuOpen ? 0 : Infinity,
+                        repeat: (isMenuOpen || hasAnimatedDots) ? 0 : 2,
                         repeatDelay: 2,
                         ease: "easeInOut",
                       }}
