@@ -20,6 +20,7 @@ const navLinksMobile = [
   { href: "/detalles", label: "Detalles" },
   { href: "/#como-llegar", label: "Ubicación" },
   { href: "/#lista-bodas", label: "Lista de Bodas" },
+  { href: "/#musica", label: "Peticiones Musicales" },
   { href: "/confirmar", label: "Confirmar Asistencia" },
 ];
 
