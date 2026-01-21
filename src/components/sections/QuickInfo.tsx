@@ -23,12 +23,12 @@ function InfoCard({ icon, title, time, location, delay }: InfoCardProps) {
       className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="flex items-start gap-4">
-        <div className="p-3 bg-gold-50 rounded-full text-gold-400">
+        <div className="p-4 bg-gold-50 rounded-full text-gold-400">
           {icon}
         </div>
         <div className="flex-1">
           <h3 className="font-display text-lg text-stone-800 mb-2">{title}</h3>
-          <div className="flex items-center gap-2 text-stone-600 text-sm mb-1">
+          <div className="flex items-center gap-2 text-stone-700 text-sm mb-1">
             <Clock className="w-4 h-4 text-gold-300" aria-hidden="true" />
             <span>{time}</span>
           </div>
@@ -59,7 +59,7 @@ export function QuickInfo() {
           >
             El día de la boda
           </h2>
-          <p className="text-stone-600 max-w-xl mx-auto">
+          <p className="text-stone-700 max-w-xl mx-auto">
             Todo lo que necesitas saber sobre nuestra celebración
           </p>
         </motion.div>

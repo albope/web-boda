@@ -91,7 +91,7 @@ export function TravelStay() {
           >
             Información Práctica
           </h2>
-          <p className="text-stone-600 max-w-2xl mx-auto">
+          <p className="text-stone-700 max-w-2xl mx-auto">
             Para los que venís de fuera, aquí tenéis todo lo necesario
           </p>
         </motion.div>
@@ -152,7 +152,7 @@ export function TravelStay() {
             <Hotel className="w-6 h-6 text-gold-400" />
             Alojamiento
           </h3>
-          <p className="text-stone-600 text-center mb-8 max-w-2xl mx-auto">
+          <p className="text-stone-700 text-center mb-8 max-w-2xl mx-auto">
             Hemos recopilado algunas opciones de alojamiento cercanas al lugar de la celebración para que puedas elegir la que mejor se adapte a ti.
           </p>
 
@@ -187,11 +187,11 @@ export function TravelStay() {
                   <MapPin className="w-4 h-4 text-gold-300" />
                   {hotel.distance}
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                   {hotel.phone && (
                     <a
                       href={`tel:${hotel.phone}`}
-                      className="inline-flex items-center gap-1 text-sm text-stone-600 hover:text-gold-500 transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-stone-600 hover:text-gold-500 hover:bg-gold-50 transition-colors min-h-[44px] min-w-[44px] px-3 py-2 -ml-3 rounded-lg"
                     >
                       <Phone className="w-4 h-4" />
                       Llamar
@@ -202,7 +202,7 @@ export function TravelStay() {
                       href={hotel.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-stone-600 hover:text-gold-500 transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-stone-600 hover:text-gold-500 hover:bg-gold-50 transition-colors min-h-[44px] min-w-[44px] px-3 py-2 rounded-lg"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Ver web

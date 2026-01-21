@@ -110,6 +110,14 @@ async function sendNotificationEmail(data: RSVPFormData): Promise<void> {
 
 export async function submitRSVP(data: RSVPFormData): Promise<RSVPResult> {
   try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error('Supabase no está configurado. Faltan variables de entorno.')
+      return { success: false, error: 'El sistema de confirmaciones no está configurado. Por favor, contacta a los novios.' }
+    }
+
     const supabase = getSupabase()
     const { error } = await supabase.from('rsvp_responses').insert({
       nombre: data.nombre,
@@ -123,7 +131,10 @@ export async function submitRSVP(data: RSVPFormData): Promise<RSVPResult> {
 
     if (error) {
       console.error('Error al guardar RSVP:', error)
-      return { success: false, error: 'Error al guardar la confirmación' }
+      if (error.code === '42501') {
+        return { success: false, error: 'No tienes permisos para enviar la confirmación. Contacta a los novios.' }
+      }
+      return { success: false, error: 'Error al guardar la confirmación. Inténtalo de nuevo.' }
     }
 
     // Enviar notificación por email (no bloqueante)
@@ -132,6 +143,6 @@ export async function submitRSVP(data: RSVPFormData): Promise<RSVPResult> {
     return { success: true }
   } catch (err) {
     console.error('Error inesperado:', err)
-    return { success: false, error: 'Error inesperado al procesar la solicitud' }
+    return { success: false, error: 'Error inesperado al procesar la solicitud. Inténtalo de nuevo más tarde.' }
   }
 }

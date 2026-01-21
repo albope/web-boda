@@ -67,8 +67,16 @@ export const WEDDING_CONFIG = {
     country: "España",
   },
   contact: {
-    whatsapp: "", // Add WhatsApp number if needed
-    email: "", // Add email if needed
+    alberto: {
+      name: "Alberto",
+      whatsapp: "34676110159",
+      email: "albertobort@gmail.com",
+    },
+    carmen: {
+      name: "Carmen",
+      whatsapp: "34647440295",
+      email: "cpalaocruz@gmail.com",
+    },
   },
   social: {
     hashtag: "#AlbertoYCarmen2026",

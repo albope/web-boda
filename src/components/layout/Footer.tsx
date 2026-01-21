@@ -1,26 +1,111 @@
-import { Heart } from "lucide-react";
+import Link from "next/link";
+import { Heart, MessageCircle, Mail } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
 
 export function Footer() {
   return (
-    <footer className="bg-stone-800 text-cream-100 pt-8 pb-12 sm:py-8 mt-auto">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <span className="font-display text-lg">
-            {WEDDING_CONFIG.couple.partner1}
-          </span>
-          <Heart className="w-4 h-4 text-gold-300 fill-gold-300" aria-hidden="true" />
-          <span className="font-display text-lg">
-            {WEDDING_CONFIG.couple.partner2}
-          </span>
+    <footer className="bg-stone-800 text-cream-100 pt-12 pb-8 mt-auto">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Grid de contenido */}
+        <div className="grid gap-8 sm:grid-cols-3 mb-8 text-center sm:text-left">
+          {/* Columna 1: Branding */}
+          <div>
+            <div className="flex items-center justify-center sm:justify-start gap-2 mb-3">
+              <span className="font-display text-xl">
+                {WEDDING_CONFIG.couple.partner1}
+              </span>
+              <Heart
+                className="w-4 h-4 text-gold-300 fill-gold-300"
+                aria-hidden="true"
+              />
+              <span className="font-display text-xl">
+                {WEDDING_CONFIG.couple.partner2}
+              </span>
+            </div>
+            <p className="text-cream-400 text-sm">
+              {WEDDING_CONFIG.date.display}
+            </p>
+            <p className="text-cream-500 text-xs mt-1">
+              {WEDDING_CONFIG.location.city}, {WEDDING_CONFIG.location.region}
+            </p>
+          </div>
+
+          {/* Columna 2: Enlaces rápidos */}
+          <div>
+            <h4 className="font-medium text-cream-200 mb-3">Enlaces</h4>
+            <ul className="space-y-2 text-sm text-cream-400">
+              <li>
+                <Link
+                  href="/detalles"
+                  className="hover:text-gold-300 transition-colors"
+                >
+                  Detalles del evento
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/confirmar"
+                  className="hover:text-gold-300 transition-colors"
+                >
+                  Confirmar asistencia
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="#como-llegar"
+                  className="hover:text-gold-300 transition-colors"
+                >
+                  Cómo llegar
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Columna 3: Contacto */}
+          <div>
+            <h4 className="font-medium text-cream-200 mb-3">Contacto</h4>
+            <ul className="space-y-2 text-sm text-cream-400">
+              <li>
+                <a
+                  href={`https://wa.me/${WEDDING_CONFIG.contact.alberto.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold-300 transition-colors inline-flex items-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                  {WEDDING_CONFIG.contact.alberto.name}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${WEDDING_CONFIG.contact.carmen.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold-300 transition-colors inline-flex items-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                  {WEDDING_CONFIG.contact.carmen.name}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${WEDDING_CONFIG.contact.alberto.email}`}
+                  className="hover:text-gold-300 transition-colors inline-flex items-center gap-2"
+                >
+                  <Mail className="w-4 h-4" aria-hidden="true" />
+                  Email
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <p className="text-cream-300 text-sm mb-3">
-          {WEDDING_CONFIG.date.display}
-        </p>
+        {/* Línea divisoria */}
+        <div className="h-px bg-stone-700 mb-6" />
 
-        <p className="text-cream-400 text-xs">
-          Gracias por ser parte de nuestra historia
+        {/* Copyright */}
+        <p className="text-cream-500 text-xs text-center">
+          Hecho con amor para nuestro día especial
         </p>
       </div>
     </footer>

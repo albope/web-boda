@@ -30,7 +30,7 @@ export function DressCode() {
             {WEDDING_CONFIG.dressCode.style}
           </p>
 
-          <p className="text-stone-600 max-w-md mx-auto">
+          <p className="text-stone-700 max-w-md mx-auto">
             {WEDDING_CONFIG.dressCode.description}
           </p>
         </motion.div>
