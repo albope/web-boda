@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WEDDING_CONFIG } from "@/config/wedding";
 import { cn } from "@/lib/utils";
+import { WeddingDayTimeline } from "./WeddingDayTimeline";
 
 type WeddingState = "countdown" | "wedding-day" | "married";
 
@@ -213,44 +214,9 @@ export function Countdown() {
     );
   }
 
-  // Wedding day state
+  // Wedding day state - Timeline dinámico
   if (currentState === "wedding-day") {
-    return (
-      <>
-                <section className="py-20 sm:py-28 bg-gradient-to-b from-cream-50 to-cream-100/50">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="space-y-6"
-            >
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="inline-block text-7xl sm:text-8xl"
-              >
-                💒
-              </motion.div>
-              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-stone-800">
-                ¡Hoy es el gran día!
-              </h2>
-              <p className="text-stone-600 text-lg sm:text-xl max-w-md mx-auto">
-                {WEDDING_CONFIG.date.day}, {WEDDING_CONFIG.date.display}
-              </p>
-              <motion.button
-                onClick={fireConfetti}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="mt-4 px-6 py-3 bg-gold-400 text-white rounded-full font-medium hover:bg-gold-500 transition-colors"
-              >
-                🎉 ¡Celebrar!
-              </motion.button>
-            </motion.div>
-          </div>
-        </section>
-      </>
-    );
+    return <WeddingDayTimeline onCelebrate={fireConfetti} />;
   }
 
   // Married state (after wedding)

@@ -32,27 +32,38 @@ export const WEDDING_CONFIG = {
   schedule: [
     {
       time: "12:00",
+      isoTime: "2026-11-14T12:00:00+01:00",
       event: "Ceremonia religiosa",
       location: "Iglesia Mayor de Santiago",
       icon: "church",
     },
     {
       time: "13:30",
+      isoTime: "2026-11-14T13:30:00+01:00",
       event: "Aperitivo de bienvenida",
       location: "Salones Media Luna",
       icon: "wine",
     },
     {
       time: "15:00",
+      isoTime: "2026-11-14T15:00:00+01:00",
       event: "Banquete",
       location: "Salones Media Luna",
       icon: "utensils",
     },
     {
       time: "20:00",
+      isoTime: "2026-11-14T20:00:00+01:00",
       event: "Fiesta y baile",
       location: "Salones Media Luna",
       icon: "music",
+    },
+    {
+      time: "04:00",
+      isoTime: "2026-11-15T04:00:00+01:00",
+      event: "Fin de fiesta",
+      location: "Salones Media Luna",
+      icon: "heart",
     },
   ],
   dressCode: {
