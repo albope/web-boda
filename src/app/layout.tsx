@@ -20,7 +20,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Boda de Alberto & Carmen - 14 de Noviembre de 2026",
+  title: "Alberto & Carmen 14/11/2026",
+  icons: {
+    icon: "/icon.svg",
+  },
   description:
     "Toda la información sobre la boda de Alberto y Carmen, el 14 de noviembre de 2026 en Jumilla. Confirma tu asistencia y entérate de todos los detalles.",
   keywords: ["boda", "Alberto", "Carmen", "Jumilla", "2026", "invitación"],
