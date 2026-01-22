@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Heart, MessageCircle, Mail, Cloud } from "lucide-react";
+import { Heart, MessageCircle, Cloud } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
 
 export function Footer() {
@@ -94,15 +94,6 @@ export function Footer() {
                 >
                   <MessageCircle className="w-4 h-4" aria-hidden="true" />
                   {WEDDING_CONFIG.contact.carmen.name}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${WEDDING_CONFIG.contact.alberto.email}`}
-                  className="hover:text-gold-300 transition-colors inline-flex items-center gap-2"
-                >
-                  <Mail className="w-4 h-4" aria-hidden="true" />
-                  Email
                 </a>
               </li>
             </ul>

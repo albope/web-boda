@@ -6,7 +6,7 @@ import { DressCode } from "@/components/sections/DressCode";
 import { FAQ } from "@/components/sections/FAQ";
 
 export const metadata: Metadata = {
-  title: "Detalles de la Boda - Alberto & Carmen",
+  title: "Información - Alberto & Carmen",
   description:
     "Toda la información sobre la ceremonia, el banquete, ubicaciones, horarios y código de vestimenta para la boda de Alberto y Carmen.",
 };
@@ -37,7 +37,7 @@ export default function DetallesPage() {
 
           <div className="text-center">
             <h1 className="font-display text-3xl sm:text-4xl text-stone-800 mb-4">
-              Detalles de la Boda
+              Información
             </h1>
             <p className="text-stone-600 max-w-xl mx-auto">
               Todo lo que necesitas saber para disfrutar de nuestro día especial

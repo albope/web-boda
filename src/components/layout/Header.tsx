@@ -10,16 +10,18 @@ import { cn } from "@/lib/utils";
 // Desktop: sin "Confirmar Asistencia" (ya está el botón CTA)
 const navLinksDesktop = [
   { href: "/", label: "Inicio" },
-  { href: "/detalles", label: "Detalles" },
+  { href: "/detalles", label: "Información" },
   { href: "/#como-llegar", label: "Ubicación" },
+  { href: "/#detalles-boda", label: "Detalles de Boda" },
+  { href: "/#musica", label: "Peticiones Musicales" },
 ];
 
 // Mobile: con "Confirmar Asistencia" en el menú lateral
 const navLinksMobile = [
   { href: "/", label: "Inicio" },
-  { href: "/detalles", label: "Detalles" },
+  { href: "/detalles", label: "Información" },
   { href: "/#como-llegar", label: "Ubicación" },
-  { href: "/#lista-bodas", label: "Lista de Bodas" },
+  { href: "/#detalles-boda", label: "Detalles de Boda" },
   { href: "/#musica", label: "Peticiones Musicales" },
   { href: "/confirmar", label: "Confirmar Asistencia" },
 ];

@@ -67,10 +67,10 @@ export const WEDDING_CONFIG = {
     },
   ],
   dressCode: {
-    title: "Código de Vestimenta",
-    style: "Elegante / Cocktail",
+    title: "Código de vestimenta",
+    style: "Vestimenta habitual de boda",
     description:
-      "Sugerimos tonos elegantes y sobrios. Se ruega evitar el color blanco.",
+      "Lo importante es que vengáis cómodos y a gusto.",
   },
   location: {
     city: "Jumilla",
@@ -93,10 +93,10 @@ export const WEDDING_CONFIG = {
     hashtag: "#AlbertoYCarmen2026",
   },
   gift: {
-    title: "Lista de Bodas",
+    title: "Detalles de Boda",
     subtitle: "Vuestra presencia es el mejor regalo",
     message:
-      "Para quienes deseéis acompañar vuestra presencia con un regalo, aquí tenéis los datos.",
+      "Para quienes deseéis acompañar vuestra presencia con un detalle, aquí tenéis la información.",
     iban: "ES00 0000 0000 0000 0000 0000", // Reemplazar con IBAN real
     bankName: "Nombre del Banco",
     accountHolder: "Alberto Bort / Carmen Palao",

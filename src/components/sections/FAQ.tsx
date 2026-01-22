@@ -14,7 +14,7 @@ const faqItems = [
   {
     question: "¿Hay parking disponible?",
     answer:
-      "Sí, hay aparcamiento gratuito disponible en el recinto de Salones Media Luna. En la Iglesia Mayor de Santiago se puede aparcar en las calles cercanas.",
+      "Sí, hay aparcamiento gratuito disponible en el recinto de Salones Media Luna. En la Iglesia Mayor de Santiago aparcar es complicado, os recomendamos llegar con tiempo o ir andando si es posible.",
   },
   {
     question: "¿Puedo llevar niños?",
@@ -33,7 +33,13 @@ const faqItems = [
   },
   {
     question: "¿Puedo subir fotos a redes sociales?",
-    answer: `¡Por supuesto! Os animamos a compartir vuestras fotos usando el hashtag ${WEDDING_CONFIG.social.hashtag}. Así podremos verlas todos.`,
+    answer:
+      "¡Por supuesto! También tendremos un álbum compartido disponible en esta misma web donde podréis subir vuestras fotos para que todos las veamos.",
+  },
+  {
+    question: "¿Dónde puedo hacer una contribución?",
+    answer:
+      "En la sección <a href='/#detalles-boda' class='text-gold-500 hover:text-gold-600 underline underline-offset-2'>Detalles de Boda</a> encontraréis toda la información.",
   },
 ];
 
@@ -87,9 +93,10 @@ export function FAQ() {
                   </Accordion.Trigger>
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden data-[state=open]:animate-slide-up data-[state=closed]:animate-fade-in">
-                  <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-stone-600 text-sm leading-relaxed">
-                    {item.answer}
-                  </div>
+                  <div
+                    className="px-4 sm:px-5 pb-4 sm:pb-5 text-stone-600 text-sm leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                  />
                 </Accordion.Content>
               </Accordion.Item>
             </motion.div>

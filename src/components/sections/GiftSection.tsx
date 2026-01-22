@@ -30,7 +30,7 @@ export function GiftSection() {
 
   return (
     <section
-      id="lista-bodas"
+      id="detalles-boda"
       className="py-16 sm:py-20 bg-gradient-to-b from-cream-100 to-cream-50"
       aria-labelledby="gift-title"
     >
