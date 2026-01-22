@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { isAuthenticated, getRSVPResponses, getRSVPStats } from '@/app/actions/admin'
+import { getGalleryPhotos } from '@/app/actions/gallery'
 import { DashboardClient } from './DashboardClient'
 
 export default async function AdminDashboardPage() {
@@ -9,10 +10,13 @@ export default async function AdminDashboardPage() {
     redirect('/admin')
   }
 
-  const [responses, stats] = await Promise.all([
+  const [responses, stats, galleryResult] = await Promise.all([
     getRSVPResponses(),
     getRSVPStats(),
+    getGalleryPhotos(),
   ])
 
-  return <DashboardClient responses={responses} stats={stats} />
+  const galleryPhotos = galleryResult.success ? galleryResult.data || [] : []
+
+  return <DashboardClient responses={responses} stats={stats} galleryPhotos={galleryPhotos} />
 }

@@ -1,8 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Heart, MessageCircle, Cloud } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // No mostrar footer en páginas de admin
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="bg-stone-800 text-cream-100 pt-12 pb-8 mt-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">

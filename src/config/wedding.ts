@@ -92,6 +92,13 @@ export const WEDDING_CONFIG = {
   social: {
     hashtag: "#AlbertoYCarmen2026",
   },
+  gallery: {
+    enabledFrom: "2026-11-13T00:00:00+01:00",
+    maxFileSizeMB: 10,
+    allowedFormats: ["image/jpeg", "image/png", "image/webp", "image/heic"],
+    maxDimension: 1920, // Resize a este tamaño máximo
+    storageBucket: "gallery-photos",
+  },
   gift: {
     title: "Regalos de Boda",
     subtitle: "Vuestra presencia es el mejor regalo",

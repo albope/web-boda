@@ -2,16 +2,19 @@
 
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { LogOut, Download, RefreshCw } from 'lucide-react'
+import { LogOut, Download, RefreshCw, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { RSVPStats } from '@/components/features/admin/RSVPStats'
 import { RSVPTable } from '@/components/features/admin/RSVPTable'
+import { GalleryManager } from '@/components/features/admin/GalleryManager'
 import { logout } from '@/app/actions/admin'
 import type { RSVPResponse, RSVPStats as RSVPStatsType } from '@/app/actions/admin'
+import type { GalleryPhoto } from '@/lib/gallery'
 
 interface DashboardClientProps {
   responses: RSVPResponse[]
   stats: RSVPStatsType
+  galleryPhotos: GalleryPhoto[]
 }
 
 function exportToCSV(responses: RSVPResponse[]) {
@@ -40,7 +43,7 @@ function exportToCSV(responses: RSVPResponse[]) {
   link.click()
 }
 
-export function DashboardClient({ responses, stats }: DashboardClientProps) {
+export function DashboardClient({ responses, stats, galleryPhotos }: DashboardClientProps) {
   const router = useRouter()
 
   const handleLogout = async () => {
@@ -115,6 +118,17 @@ export function DashboardClient({ responses, stats }: DashboardClientProps) {
 
           {/* Table */}
           <RSVPTable responses={responses} />
+
+          {/* Gallery Section */}
+          <section className="pt-8 border-t border-stone-200">
+            <div className="flex items-center gap-3 mb-4">
+              <ImageIcon className="w-5 h-5 text-gold-400" />
+              <h2 className="font-display text-lg text-stone-800">
+                Galería de Fotos ({galleryPhotos.length})
+              </h2>
+            </div>
+            <GalleryManager initialPhotos={galleryPhotos} />
+          </section>
         </motion.div>
       </div>
     </main>

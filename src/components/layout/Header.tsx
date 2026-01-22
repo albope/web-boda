@@ -14,6 +14,7 @@ const navLinksDesktop = [
   { href: "/#como-llegar", label: "Ubicación" },
   { href: "/#regalos-boda", label: "Regalos de Boda" },
   { href: "/#musica", label: "Peticiones Musicales" },
+  { href: "/galeria", label: "Galería" },
 ];
 
 // Mobile: con "Confirmar Asistencia" en el menú lateral
@@ -23,6 +24,7 @@ const navLinksMobile = [
   { href: "/#como-llegar", label: "Ubicación" },
   { href: "/#regalos-boda", label: "Regalos de Boda" },
   { href: "/#musica", label: "Peticiones Musicales" },
+  { href: "/galeria", label: "Galería" },
   { href: "/confirmar", label: "Confirmar Asistencia" },
 ];
 
@@ -121,8 +123,16 @@ export function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  // No mostrar el header en páginas de admin
+  const isAdminPage = pathname?.startsWith("/admin");
+
   // Reducir tamaño del logo en páginas con títulos que se solapan
-  const isCompactLogo = pathname === "/detalles" || pathname === "/confirmar";
+  const isCompactLogo = pathname === "/detalles" || pathname === "/confirmar" || pathname === "/galeria";
+
+  // No renderizar nada en páginas de admin
+  if (isAdminPage) {
+    return null;
+  }
 
   useEffect(() => {
     const handleScroll = () => {
