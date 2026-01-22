@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, MessageCircle, Cloud } from "lucide-react";
+import { Heart, MessageCircle, Cloud, Camera } from "lucide-react";
 import { WEDDING_CONFIG } from "@/config/wedding";
 
 export function Footer() {
@@ -75,6 +75,15 @@ export function Footer() {
                 >
                   <Cloud className="w-4 h-4" aria-hidden="true" />
                   Pronóstico del tiempo
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/galeria"
+                  className="hover:text-gold-300 transition-colors inline-flex items-center gap-2"
+                >
+                  <Camera className="w-4 h-4" aria-hidden="true" />
+                  Galería de fotos
                 </Link>
               </li>
             </ul>
