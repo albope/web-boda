@@ -12,7 +12,7 @@ const navLinksDesktop = [
   { href: "/", label: "Inicio" },
   { href: "/detalles", label: "Información" },
   { href: "/#como-llegar", label: "Ubicación" },
-  { href: "/#detalles-boda", label: "Detalles de Boda" },
+  { href: "/#regalos-boda", label: "Regalos de Boda" },
   { href: "/#musica", label: "Peticiones Musicales" },
 ];
 
@@ -21,7 +21,7 @@ const navLinksMobile = [
   { href: "/", label: "Inicio" },
   { href: "/detalles", label: "Información" },
   { href: "/#como-llegar", label: "Ubicación" },
-  { href: "/#detalles-boda", label: "Detalles de Boda" },
+  { href: "/#regalos-boda", label: "Regalos de Boda" },
   { href: "/#musica", label: "Peticiones Musicales" },
   { href: "/confirmar", label: "Confirmar Asistencia" },
 ];

@@ -39,7 +39,7 @@ const faqItems = [
   {
     question: "¿Dónde puedo hacer una contribución?",
     answer:
-      "En la sección <a href='/#detalles-boda' class='text-gold-500 hover:text-gold-600 underline underline-offset-2'>Detalles de Boda</a> encontraréis toda la información.",
+      "En la sección <a href='/#regalos-boda' class='text-gold-500 hover:text-gold-600 underline underline-offset-2'>Regalos de Boda</a> encontraréis toda la información.",
   },
 ];
 

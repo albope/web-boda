@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import {
   Car,
-  Bus,
   Hotel,
   MapPin,
   ExternalLink,
@@ -36,15 +35,6 @@ const transportOptions: TransportOption[] = [
     details: [
       "Desde Valencia: ~1h 45min por A-7",
       "Desde Madrid: ~4h por A-3 y A-30"
-    ]
-  },
-  {
-    icon: <Bus className="w-6 h-6" />,
-    title: "En autobús",
-    description: "Conexión en autobús disponible desde Valencia.",
-    details: [
-      "Desde Valencia: líneas regulares disponibles",
-      "Consulta horarios en la estación de autobuses"
     ]
   },
 ];
@@ -107,7 +97,7 @@ export function TravelStay() {
           <h3 className="font-display text-2xl text-stone-800 mb-8 text-center">
             Llegar a Jumilla
           </h3>
-          <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
+          <div className="max-w-md mx-auto">
             {transportOptions.map((option, index) => (
               <motion.div
                 key={option.title}

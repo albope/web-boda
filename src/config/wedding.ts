@@ -93,7 +93,7 @@ export const WEDDING_CONFIG = {
     hashtag: "#AlbertoYCarmen2026",
   },
   gift: {
-    title: "Detalles de Boda",
+    title: "Regalos de Boda",
     subtitle: "Vuestra presencia es el mejor regalo",
     message:
       "Para quienes deseéis acompañar vuestra presencia con un detalle, aquí tenéis la información.",
