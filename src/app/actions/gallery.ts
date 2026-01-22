@@ -4,7 +4,6 @@ import { createClient } from '@supabase/supabase-js'
 import { WEDDING_CONFIG } from '@/config/wedding'
 import { isGalleryEnabled } from '@/lib/gallery'
 import type {
-  GalleryPhoto,
   UploadPhotoData,
   GalleryResult,
   GetPhotosResult,

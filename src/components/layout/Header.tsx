@@ -129,12 +129,9 @@ export function Header() {
   // Reducir tamaño del logo en páginas con títulos que se solapan
   const isCompactLogo = pathname === "/detalles" || pathname === "/confirmar" || pathname === "/galeria";
 
-  // No renderizar nada en páginas de admin
-  if (isAdminPage) {
-    return null;
-  }
-
   useEffect(() => {
+    if (isAdminPage) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
@@ -142,18 +139,25 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isAdminPage]);
 
   // Detener animación de dots después de algunas repeticiones para ahorrar batería
   useEffect(() => {
+    if (isAdminPage) return;
+
     const timer = setTimeout(() => {
       setHasAnimatedDots(true);
     }, 6000); // 3 ciclos de animación (2s cada uno)
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAdminPage]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  // No renderizar nada en páginas de admin
+  if (isAdminPage) {
+    return null;
+  }
 
   return (
     <>
