@@ -31,6 +31,9 @@ const rsvpSchema = z.object({
   asiste: z.enum(["si", "no"], {
     message: "Por favor, indica si asistirás",
   }),
+  traeNinos: z.enum(["si", "no"]).optional(),
+  numeroNinos: z.coerce.number().min(1).max(10).optional(),
+  menuInfantil: z.enum(["si", "no"]).optional(),
   alergias: z.string().max(500, "El texto es demasiado largo").optional(),
   menuEspecial: z.string().max(200, "El texto es demasiado largo").optional(),
   mensaje: z.string().max(500, "El mensaje es demasiado largo").optional(),
@@ -57,6 +60,7 @@ export function RSVPForm() {
   });
 
   const asiste = watch("asiste");
+  const traeNinos = watch("traeNinos");
 
   const onSubmit = async (data: RSVPFormData) => {
     setSubmitError(null);
@@ -66,6 +70,9 @@ export function RSVPForm() {
       email: data.email || undefined,
       telefono: data.telefono || undefined,
       asiste: data.asiste === "si",
+      traeNinos: data.traeNinos === "si",
+      numeroNinos: data.traeNinos === "si" ? data.numeroNinos : undefined,
+      menuInfantil: data.traeNinos === "si" ? data.menuInfantil === "si" : undefined,
       alergias: data.alergias || undefined,
       menuEspecial: data.menuEspecial || undefined,
       mensaje: data.mensaje || undefined,
@@ -263,6 +270,160 @@ export function RSVPForm() {
               transition={{ duration: 0.3 }}
               className="space-y-6 overflow-hidden"
             >
+              {/* ¿Vienes con niños? */}
+              <div>
+                <p className="block text-sm font-medium text-stone-700 mb-3">
+                  ¿Vienes con niños?
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <label
+                    className={cn(
+                      "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                      traeNinos === "si"
+                        ? "border-gold-300 bg-gold-50"
+                        : "border-stone-200 hover:border-stone-300"
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      value="si"
+                      className="sr-only"
+                      {...register("traeNinos")}
+                    />
+                    <span
+                      className={cn(
+                        "text-2xl mb-1",
+                        traeNinos === "si" ? "grayscale-0" : "grayscale"
+                      )}
+                      aria-hidden="true"
+                    >
+                      👶
+                    </span>
+                    <span
+                      className={cn(
+                        "font-medium",
+                        traeNinos === "si" ? "text-gold-500" : "text-stone-600"
+                      )}
+                    >
+                      Sí
+                    </span>
+                  </label>
+
+                  <label
+                    className={cn(
+                      "relative flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                      traeNinos === "no"
+                        ? "border-stone-400 bg-stone-50"
+                        : "border-stone-200 hover:border-stone-300"
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      value="no"
+                      className="sr-only"
+                      {...register("traeNinos")}
+                    />
+                    <span
+                      className={cn(
+                        "text-2xl mb-1",
+                        traeNinos === "no" ? "grayscale-0" : "grayscale"
+                      )}
+                      aria-hidden="true"
+                    >
+                      🙅
+                    </span>
+                    <span
+                      className={cn(
+                        "font-medium",
+                        traeNinos === "no" ? "text-stone-700" : "text-stone-600"
+                      )}
+                    >
+                      No
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Campos adicionales si trae niños */}
+              <AnimatePresence>
+                {traeNinos === "si" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6 overflow-hidden"
+                  >
+                    {/* Número de niños */}
+                    <Input
+                      label="¿Cuántos niños?"
+                      type="number"
+                      min={1}
+                      max={10}
+                      placeholder="1"
+                      error={errors.numeroNinos?.message}
+                      {...register("numeroNinos")}
+                    />
+
+                    {/* ¿Necesitan menú infantil? */}
+                    <div>
+                      <p className="block text-sm font-medium text-stone-700 mb-3">
+                        ¿Necesitan menú infantil?
+                      </p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <label
+                          className={cn(
+                            "relative flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                            watch("menuInfantil") === "si"
+                              ? "border-gold-300 bg-gold-50"
+                              : "border-stone-200 hover:border-stone-300"
+                          )}
+                        >
+                          <input
+                            type="radio"
+                            value="si"
+                            className="sr-only"
+                            {...register("menuInfantil")}
+                          />
+                          <span
+                            className={cn(
+                              "font-medium",
+                              watch("menuInfantil") === "si" ? "text-gold-500" : "text-stone-600"
+                            )}
+                          >
+                            Sí, por favor
+                          </span>
+                        </label>
+
+                        <label
+                          className={cn(
+                            "relative flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                            watch("menuInfantil") === "no"
+                              ? "border-stone-400 bg-stone-50"
+                              : "border-stone-200 hover:border-stone-300"
+                          )}
+                        >
+                          <input
+                            type="radio"
+                            value="no"
+                            className="sr-only"
+                            {...register("menuInfantil")}
+                          />
+                          <span
+                            className={cn(
+                              "font-medium",
+                              watch("menuInfantil") === "no" ? "text-stone-700" : "text-stone-600"
+                            )}
+                          >
+                            No es necesario
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Alergias */}
               <Input
                 label="Alergias o intolerancias"

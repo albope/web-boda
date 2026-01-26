@@ -19,6 +19,9 @@ export interface RSVPFormData {
   email?: string
   telefono?: string
   asiste: boolean
+  traeNinos?: boolean
+  numeroNinos?: number
+  menuInfantil?: boolean
   alergias?: string
   menuEspecial?: string
   mensaje?: string
@@ -68,6 +71,12 @@ async function sendNotificationEmail(data: RSVPFormData): Promise<void> {
         <tr>
           <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Teléfono:</td>
           <td style="padding: 10px; border-bottom: 1px solid #eee;">${data.telefono}</td>
+        </tr>
+        ` : ''}
+        ${data.traeNinos ? `
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Niños:</td>
+          <td style="padding: 10px; border-bottom: 1px solid #eee;">Sí, ${data.numeroNinos} niño(s) ${data.menuInfantil ? '- Necesitan menú infantil' : ''}</td>
         </tr>
         ` : ''}
         ${data.alergias ? `
@@ -124,6 +133,9 @@ export async function submitRSVP(data: RSVPFormData): Promise<RSVPResult> {
       email: data.email || null,
       telefono: data.telefono || null,
       asiste: data.asiste,
+      trae_ninos: data.traeNinos || false,
+      numero_ninos: data.numeroNinos || null,
+      menu_infantil: data.menuInfantil || false,
       alergias: data.alergias || null,
       menu_especial: data.menuEspecial || null,
       mensaje: data.mensaje || null,

@@ -19,7 +19,7 @@ const faqItems = [
   {
     question: "¿Puedo llevar niños?",
     answer:
-      "Por favor, consultad con nosotros si tenéis dudas sobre traer a vuestros hijos. Queremos que todos disfrutéis de la celebración.",
+      "¡Por supuesto! Los niños son bienvenidos a nuestra celebración. Disponemos de menú infantil para los más pequeños, solo tienes que indicarlo al confirmar tu asistencia.",
   },
   {
     question: "¿Hay opciones de menú especiales?",
